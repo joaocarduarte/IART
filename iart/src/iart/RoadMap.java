@@ -13,8 +13,8 @@ public class RoadMap {
 	public RoadMap(){
 		
 		LoadFileContent filesContent = new LoadFileContent();
-		filesContent.read_nodes();
-		filesContent.read_edges();
+		filesContent.read_nodes(this);
+		filesContent.read_edges(this);
 
 		graph.display();
 	}

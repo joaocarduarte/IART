@@ -1,0 +1,4 @@
+AB;A;B
+AC;A;C
+AD;A;D
+DC;D;C
