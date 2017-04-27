@@ -5,6 +5,8 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.implementations.SingleGraph;
 
+import java.util.Iterator;
+
 public class RoadMap {
 
 	Graph graph = new SingleGraph("RoadMap");
@@ -15,12 +17,14 @@ public class RoadMap {
 		LoadFileContent filesContent = new LoadFileContent();
 		filesContent.read_nodes(this);
 		filesContent.read_edges(this);
-
-		graph.display();
+		
+		graph.display(false);
 	}
 	
-	public void add_node(String id){
+	public void add_node(String id, String x, String y){
 		Node node = graph.addNode(id);
+		node.setAttribute("x", Integer.parseInt(x));
+		node.setAttribute("y", Integer.parseInt(y));
 	}
 	
 	public void add_edge(String id, String firstNodeId, String secondNodeId){

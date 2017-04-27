@@ -10,9 +10,11 @@ public class LoadFileContent {
 	public void read_nodes(RoadMap map){
 		String line;
 		try{
-			BufferedReader br = new BufferedReader(new FileReader("src/iart/nodes.txt"));
+			//no eclipse fileName = "src/iart/nodes.txt"
+			BufferedReader br = new BufferedReader(new FileReader("iart/src/iart/nodes.txt"));
 			while ((line = br.readLine()) != null) {
-				map.add_node(line);
+				String[] parts = parse_line(line);
+				map.add_node(parts[0], parts[1], parts[2]);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -22,7 +24,8 @@ public class LoadFileContent {
 	public void read_edges(RoadMap map){
 		String line;
 		try{
-			BufferedReader br = new BufferedReader(new FileReader("src/iart/edges.txt"));
+			//no eclipse fileName = "src/iart/edges.txt"
+			BufferedReader br = new BufferedReader(new FileReader("iart/src/iart/edges.txt"));
 			while ((line = br.readLine()) != null) {
 				map.add_edge(parse_line(line)[0], parse_line(line)[1], parse_line(line)[2]);
 			}
