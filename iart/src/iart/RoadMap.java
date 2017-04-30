@@ -20,14 +20,14 @@ public class RoadMap {
 
 		graph.display(false);
 
-		Path p = new Path(graph, "0", "4");
-		p.heuristic(graph.getNode("10"));
+		Path p = new Path(graph, "8", "15");
+		p.route();
 	}
 	
 	public void add_node(String id, String x, String y){
 		Node node = graph.addNode(id);
-		node.setAttribute("x", Integer.parseInt(x));
-		node.setAttribute("y", Integer.parseInt(y));
+		node.setAttribute("x", Double.parseDouble(x));
+		node.setAttribute("y", Double.parseDouble(y));
 		node.addAttribute("ui.label", id);
 	}
 	
