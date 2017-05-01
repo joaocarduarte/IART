@@ -31,6 +31,9 @@ public class Path {
         }
     }
 
+    /**
+     * Custom comparator class used by priority queue for sorting purposes (increasingly by optimisticDistanceToEnd)
+     */
     public class StepComparator implements Comparator<Step> {
 
         @Override
@@ -88,8 +91,6 @@ public class Path {
             Step s = unvisited.remove();
             visited.add(s);
 
-            //curr_id = s.node.
-
             if (s.node.equals(end)){
                 break;
             }
@@ -124,10 +125,9 @@ public class Path {
         Collections.reverse(result);
     }
 
-    public ArrayList<Node> getResult() {
-        return result;
-    }
-
+    /**
+     * Highlights both nodes and edges that make the path stored inside result
+     */
     public void highlight(){
         graph.addAttribute("ui.stylesheet", "" +
                 "node.important {" +
@@ -139,7 +139,6 @@ public class Path {
                 "}");
 
         for (int i = 0; i < result.size(); i++){
-            //System.out.println(n.getId());
             if (i == result.size()-1){
                 Node n = result.get(i);
                 n.addAttribute("ui.class", "important");
