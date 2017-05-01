@@ -20,8 +20,12 @@ public class RoadMap {
 
 		graph.display(false);
 
-		Path p = new Path(graph, "8", "15");
+		Path p = new Path(graph, "3", "20");
 		p.route();
+
+		for (Node n: p.getResult()){
+			System.out.println(n.getId());
+		}
 	}
 	
 	public void add_node(String id, String x, String y){

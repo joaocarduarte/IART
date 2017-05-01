@@ -4,19 +4,16 @@ import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Path {
     public class Step {
         Node node;
-        Node previousStep;
+        Step previousStep;
         double distanceToStart;
         double optimisticDistanceToEnd;
 
-        public Step(Node n, Node prev, double distStart, double distEnd) {
+        public Step(Node n, Step prev, double distStart, double distEnd) {
             this.node = n;
             this.previousStep = prev;
             this.distanceToStart = distStart;
@@ -81,24 +78,53 @@ public class Path {
         Node end    = graph.getNode(endNode);
 
         ArrayList<Step> visited = new ArrayList<>();
-        ArrayList<Step> unvisited = new ArrayList<>();
+        PriorityQueue<Step> unvisited = new PriorityQueue<>(new StepComparator());
 
         this.heuristic(start);
-        Step s = new Step(start, start, 0, start.getAttribute("heuristic"));
-        visited.add(s);
+        Step firstStep = new Step(start, null, 0, start.getAttribute("heuristic"));
+        unvisited.add(firstStep);
 
-        for (Edge e:start.getEachEdge()){
-            Node n = e.getOpposite(start);
-            this.heuristic(n);
+        while (unvisited.size() != 0){
+            Step s = unvisited.remove();
+            visited.add(s);
 
-            unvisited.add(new Step(n, start, e.getAttribute("weight"), n.getAttribute("heuristic")));
+            //curr_id = s.node.
+
+            if (s.node.equals(end)){
+                break;
+            }
+
+            Node n = s.node;
+
+            for (Edge e:n.getEachEdge()){
+                Node m = e.getOpposite(n);
+
+                if (!m.getId().equals(visited.get(visited.size()-1))){
+                    this.heuristic(m);
+
+                    double distanceToStart = (double) e.getAttribute("weight") + s.distanceToStart;
+                    double optimisticDistanceToEnd = distanceToStart + (double) m.getAttribute("heuristic");
+
+                    unvisited.add(new Step(m, s, distanceToStart, optimisticDistanceToEnd));
+                }
+            }
         }
 
-        unvisited.sort(new StepComparator());
+        Step s = visited.get(visited.size()-1);
+        while (true){
+            result.add(s.node);
 
-        for (Step st: unvisited){
-            System.out.println(st.node.getId());
+            if (s.previousStep == null){
+                break;
+            }
+
+            s = s.previousStep;
         }
+
+        Collections.reverse(result);
     }
 
+    public ArrayList<Node> getResult() {
+        return result;
+    }
 }
