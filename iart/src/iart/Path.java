@@ -127,4 +127,31 @@ public class Path {
     public ArrayList<Node> getResult() {
         return result;
     }
+
+    public void highlight(){
+        graph.addAttribute("ui.stylesheet", "" +
+                "node.important {" +
+                "		fill-color: red;" +
+                "}" +
+                "" +
+                "edge.important {" +
+                "		fill-color: red;" +
+                "}");
+
+        for (int i = 0; i < result.size(); i++){
+            //System.out.println(n.getId());
+            if (i == result.size()-1){
+                Node n = result.get(i);
+                n.addAttribute("ui.class", "important");
+                break;
+            }
+
+            Node n1 = result.get(i);
+            Node n2 = result.get(i+1);
+            Edge e  = n1.getEdgeBetween(n2);
+
+            n1.addAttribute("ui.class", "important");
+            e.addAttribute("ui.class", "important");
+        }
+    }
 }
