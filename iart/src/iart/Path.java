@@ -59,7 +59,7 @@ public class Path {
     /**
      * @param n
      *
-     * calculates euclidean distance between Nodes n and endNode
+     * calculates euclidean distance between Nodes n and this.endNode
      * and stores it as attribute "heuristic" in Node n
      */
     public void heuristic(Node n){

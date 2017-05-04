@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 public class RoadMap {
 
+	public final String airport = "12"; //airports are typically located in the outskirts of the city
 	Graph graph = new SingleGraph("RoadMap");
 
 
@@ -20,7 +21,7 @@ public class RoadMap {
 
 
 
-		Path p = new Path(graph, "3", "20");
+		Path p = new Path(graph, "40", "31");
 		p.route();
 		p.highlight();
 
@@ -45,6 +46,25 @@ public class RoadMap {
 
 		edge.setAttribute("weight", Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2)));
 
+	}
+
+	/**
+	 *
+	 * @param stops Array of nodeId's that represent pickup points for passengers
+	 * @return Array with stops rearranged, i.e. sorted pickup spots
+	 */
+	public String[] sortStops(String[] stops){
+		//TODO: calculate linear function that passes through airport, that evenly divides stops into two groups (left and right, so to speak)
+
+		//TODO: sort both groups by distance to airport
+
+		//TODO: chose which one to start with (leave the one closest to airport for last, keeps average passenger trip time down and less "cargo" would also mean less fuel consumption)
+
+		//TODO: reverse group chosen as last
+
+		//TODO: append both arrays back as one
+
+		return stops;
 	}
 
 }
