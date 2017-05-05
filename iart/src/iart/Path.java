@@ -7,11 +7,13 @@ import org.graphstream.graph.Node;
 import java.util.*;
 
 public class Path {
-    public class Step {
+    public static class Step {
         Node node;
         Step previousStep;
         double distanceToStart;
         double optimisticDistanceToEnd;
+
+        public Step(){}
 
         public Step(Node n, Step prev, double distStart, double distEnd) {
             this.node = n;
@@ -34,7 +36,7 @@ public class Path {
     /**
      * Custom comparator class used by priority queue for sorting purposes (increasingly by optimisticDistanceToEnd)
      */
-    public class StepComparator implements Comparator<Step> {
+    public static class StepComparator implements Comparator<Step> {
 
         @Override
         public int compare(Step o1, Step o2) {
@@ -45,11 +47,13 @@ public class Path {
 
 
     private Graph graph;
-    private String startNode;
-    private String endNode;
+    private Node startNode;
+    private Node endNode;
     private ArrayList<Node> result;
 
-    public Path(Graph graph, String start, String finish){
+    public Path(){}
+
+    public Path(Graph graph, Node start, Node finish){
         this.graph = graph;
         this.startNode = start;
         this.endNode = finish;
@@ -66,8 +70,8 @@ public class Path {
         double x1, y1, x2, y2;
         x1 = n.getAttribute("x");
         y1 = n.getAttribute("y");
-        x2 = graph.getNode(endNode).getAttribute("x");
-        y2 = graph.getNode(endNode).getAttribute("y");
+        x2 = endNode.getAttribute("x");
+        y2 = endNode.getAttribute("y");
 
         n.addAttribute("heuristic", Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2)));
     }
@@ -77,21 +81,18 @@ public class Path {
      *
      */
     public void route(){
-        Node start  = graph.getNode(startNode);
-        Node end    = graph.getNode(endNode);
-
         ArrayList<Step> visited = new ArrayList<>();
         PriorityQueue<Step> unvisited = new PriorityQueue<>(new StepComparator());
 
-        this.heuristic(start);
-        Step firstStep = new Step(start, null, 0, start.getAttribute("heuristic"));
+        this.heuristic(startNode);
+        Step firstStep = new Step(startNode, null, 0, startNode.getAttribute("heuristic"));
         unvisited.add(firstStep);
 
         while (unvisited.size() != 0){
             Step s = unvisited.remove();
             visited.add(s);
 
-            if (s.node.equals(end)){
+            if (s.node.equals(endNode)){
                 break;
             }
 
