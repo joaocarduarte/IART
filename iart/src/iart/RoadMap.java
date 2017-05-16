@@ -5,6 +5,7 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.implementations.SingleGraph;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -13,7 +14,8 @@ import java.util.Map;
 public class RoadMap {
 
 	public final String airport = "12"; //airports are typically located in the outskirts of the city
-	Graph graph = new SingleGraph("RoadMap");
+	private Graph graph = new SingleGraph("RoadMap");
+	private ArrayList<Passenger> passengers = new ArrayList<>();
 
 
 	public RoadMap(){
@@ -55,6 +57,15 @@ public class RoadMap {
 
 		edge.setAttribute("weight", Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2)));
 
+	}
+
+	public void add_passenger(String id, String pickUp, String h, String m){
+		int pID = Integer.parseInt(id);
+		int hours = Integer.parseInt(h);
+		int minutes = Integer.parseInt(m);
+		LocalTime pTakeoff = LocalTime.of(hours, minutes);
+
+		passengers.add(new Passenger(pID, pickUp, pTakeoff));
 	}
 
 	/**

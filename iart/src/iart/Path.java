@@ -153,13 +153,12 @@ public class Path {
             Node n2 = result.get(i+1);
             Edge e  = n1.getEdgeBetween(n2);
 
-            n1.addAttribute("ui.class", "important");
-            e.addAttribute("ui.class", "important");
-
             if (i == 0){
-                Node n = result.get(i);
-                n.addAttribute("ui.class", "pickUp");
+                n1.addAttribute("ui.class", "pickUp");
+            } else {
+                n1.addAttribute("ui.class", "important");
             }
+            e.addAttribute("ui.class", "important");
         }
     }
 }
