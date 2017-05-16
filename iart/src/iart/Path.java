@@ -137,12 +137,15 @@ public class Path {
                 "" +
                 "edge.important {" +
                 "		fill-color: red;" +
+                "}" +
+                "node.pickUp {" +
+                "       fill-color: yellow;" +
                 "}");
 
         for (int i = 0; i < result.size(); i++){
             if (i == result.size()-1){
                 Node n = result.get(i);
-                n.addAttribute("ui.class", "important");
+                n.addAttribute("ui.class", "pickUp");
                 break;
             }
 
@@ -152,6 +155,11 @@ public class Path {
 
             n1.addAttribute("ui.class", "important");
             e.addAttribute("ui.class", "important");
+
+            if (i == 0){
+                Node n = result.get(i);
+                n.addAttribute("ui.class", "pickUp");
+            }
         }
     }
 }

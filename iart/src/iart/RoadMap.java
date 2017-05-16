@@ -22,7 +22,7 @@ public class RoadMap {
 		filesContent.read_nodes(this);
 		filesContent.read_edges(this);
 
-		String[] stops = new String[] {"5", "15", "17", "26", "8", "11"};
+		String[] stops = new String[] {"5", "43", "17", "26", "8", "11"};
 		ArrayList<Node> sortedStops = sortStops(stops);
 
 		for (int i = 0; i < sortedStops.size()-1; i++){
@@ -33,8 +33,6 @@ public class RoadMap {
 			p.route();
 			p.highlight();
 		}
-
-
 
 		graph.display(false);
 	}
@@ -164,6 +162,19 @@ public class RoadMap {
 			return true;
 		}
 		else return false;
+	}
+
+	public void highlight(String[] stops){
+		graph.addAttribute("ui.stylesheet", "" +
+				"node.pickUp {" +
+				"       fill-color: yellow;" +
+				"}");
+
+		for (String s: stops){
+			Node n = graph.getNode(s);
+
+			n.addAttribute("ui.class", "pickUp");
+		}
 	}
 
 }
