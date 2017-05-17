@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 public class LoadFileContent {
-	public final String ROOTDIR = "iart/src/iart/";			//intelliJ
-	//public final String ROOTDIR = "src/iart/";			//eclipse
+	public final String ROOTDIR 	= "iart/src/iart/";		//intelliJ
+	//public final String ROOTDIR 	= "src/iart/";			//eclipse
 
 	public LoadFileContent(){}
 

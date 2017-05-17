@@ -23,8 +23,13 @@ public class RoadMap {
 		LoadFileContent filesContent = new LoadFileContent();
 		filesContent.read_nodes(this);
 		filesContent.read_edges(this);
+		filesContent.read_passengers(this);
 
-		String[] stops = new String[] {"5", "43", "17", "26", "8", "11"};
+		ArrayList<String> stops = new ArrayList<>();
+		for (Passenger p: passengers){
+			stops.add(p.getPickupSpot());
+		}
+
 		ArrayList<Node> sortedStops = sortStops(stops);
 
 		for (int i = 0; i < sortedStops.size()-1; i++){
@@ -73,7 +78,7 @@ public class RoadMap {
 	 * @param stops Array of nodeId's that represent pickup points for passengers
 	 * @return Array with stops rearranged, i.e. sorted pickup spots + airport as first and last stop
 	 */
-	public ArrayList<Node> sortStops(String[] stops){
+	public ArrayList<Node> sortStops(ArrayList<String> stops){
 		ArrayList<Path.Step> above = new ArrayList<>();
 		ArrayList<Path.Step> below = new ArrayList<>();
 		Path p = new Path(graph, null, graph.getNode(airport));
@@ -130,7 +135,7 @@ public class RoadMap {
 	 * @param stops Array of nodeId's that represent pickup points for passengers
 	 * @return [0]-> slope (m), [1]-> y-intercept (b)  --> as in: y = mx + b
 	 */
-	public double[] lineOfBestFit(String[] stops){
+	public double[] lineOfBestFit(ArrayList<String> stops){
 		double xMedian = 0, yMedian = 0;
 		double xAirport = graph.getNode(airport).getAttribute("x");
 		double yAirport = graph.getNode(airport).getAttribute("y");
@@ -143,8 +148,8 @@ public class RoadMap {
 			yMedian += (double) n.getAttribute("y");
 		}
 
-		xMedian /= stops.length;
-		yMedian /= stops.length;
+		xMedian /= stops.size();
+		yMedian /= stops.size();
 
 		if (xMedian != xAirport){
 			m = (yMedian-yAirport)/(xMedian-xAirport);
