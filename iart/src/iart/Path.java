@@ -49,6 +49,7 @@ public class Path {
     private Graph graph;
     private Node startNode;
     private Node endNode;
+    private double length;
     private ArrayList<Node> result;
 
     public Path(){}
@@ -57,7 +58,12 @@ public class Path {
         this.graph = graph;
         this.startNode = start;
         this.endNode = finish;
+        this.length = 0;
         result = new ArrayList<>();
+    }
+
+    public double getLength() {
+        return length;
     }
 
     /**
@@ -115,6 +121,14 @@ public class Path {
         Step s = visited.get(visited.size()-1);
         while (true){
             result.add(s.node);
+
+            if (result.size() > 1){
+                Node n1 = result.get(result.size()-1);
+                Node n2 = result.get(result.size()-2);
+                Edge e = n1.getEdgeBetween(n2);
+
+                this.length += (double) e.getAttribute("weight");
+            }
 
             if (s.previousStep == null){
                 break;

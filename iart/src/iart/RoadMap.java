@@ -31,6 +31,7 @@ public class RoadMap {
 		}
 
 		ArrayList<Node> sortedStops = sortStops(stops);
+		int pathLength = 0;
 
 		for (int i = 0; i < sortedStops.size()-1; i++){
 			Node start  = sortedStops.get(i);
@@ -38,9 +39,19 @@ public class RoadMap {
 
 			Path p = new Path(graph, start, finish);
 			p.route();
+			pathLength += p.getLength();
 			p.highlight();
 		}
 
+		//450
+		/*
+		double[] line = lineOfBestFit(stops);
+		double y = line[0]*450+line[1];
+		this.add_node("48", "450", String.valueOf(y));
+		this.add_edge("88", "12", "48");
+		*/
+
+		System.out.println(pathLength);
 		graph.display(false);
 	}
 	
