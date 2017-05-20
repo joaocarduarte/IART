@@ -66,20 +66,8 @@ public class Path {
         return length;
     }
 
-    /**
-     * @param n
-     *
-     * calculates euclidean distance between Nodes n and this.endNode
-     * and stores it as attribute "heuristic" in Node n
-     */
-    public void heuristic(Node n){
-        double x1, y1, x2, y2;
-        x1 = n.getAttribute("x");
-        y1 = n.getAttribute("y");
-        x2 = endNode.getAttribute("x");
-        y2 = endNode.getAttribute("y");
-
-        n.addAttribute("heuristic", Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2)));
+    public Node getEndNode() {
+        return endNode;
     }
 
     /**
@@ -90,7 +78,7 @@ public class Path {
         ArrayList<Step> visited = new ArrayList<>();
         PriorityQueue<Step> unvisited = new PriorityQueue<>(new StepComparator());
 
-        this.heuristic(startNode);
+        RoadMap.heuristic(startNode, endNode);
         Step firstStep = new Step(startNode, null, 0, startNode.getAttribute("heuristic"));
         unvisited.add(firstStep);
 
@@ -108,7 +96,7 @@ public class Path {
                 Node m = e.getOpposite(n);
 
                 if (!m.getId().equals(visited.get(visited.size()-1))){
-                    this.heuristic(m);
+                    RoadMap.heuristic(m, endNode);
 
                     double distanceToStart = (double) e.getAttribute("weight") + s.distanceToStart;
                     double optimisticDistanceToEnd = distanceToStart + (double) m.getAttribute("heuristic");
@@ -154,12 +142,19 @@ public class Path {
                 "}" +
                 "node.pickUp {" +
                 "       fill-color: yellow;" +
+                "}" +
+                "node.airport {" +
+                "       fill-color: green;" +
                 "}");
 
         for (int i = 0; i < result.size(); i++){
             if (i == result.size()-1){
                 Node n = result.get(i);
-                n.addAttribute("ui.class", "pickUp");
+                if (n.getId().equals(RoadMap.airport)){
+                    n.addAttribute("ui.class", "airport");
+                } else {
+                    n.addAttribute("ui.class", "pickUp");
+                }
                 break;
             }
 

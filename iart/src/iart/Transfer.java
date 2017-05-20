@@ -1,7 +1,7 @@
 package iart;
 
 public class Transfer {
-	private final int CAPACITY = 7;
+	public final int CAPACITY = 7;
 	private int ocupation;
 
 	public Transfer(int ocupation){

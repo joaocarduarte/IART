@@ -13,8 +13,8 @@ import java.util.Map;
 
 public class RoadMap {
 
-	public final String airport = "12"; //airports are typically located in the outskirts of the city
-	private Graph graph = new SingleGraph("RoadMap");
+	public final static String airport = "12"; //airports are typically located in the outskirts of the city
+	private static Graph graph = new SingleGraph("RoadMap");
 	private ArrayList<Passenger> passengers = new ArrayList<>();
 
 
@@ -43,6 +43,7 @@ public class RoadMap {
 			p.highlight();
 		}
 
+
 		//450
 		/*
 		double[] line = lineOfBestFit(stops);
@@ -54,7 +55,11 @@ public class RoadMap {
 		System.out.println(pathLength);
 		graph.display(false);
 	}
-	
+
+	public static Graph getGraph() {
+		return graph;
+	}
+
 	public void add_node(String id, String x, String y){
 		Node node = graph.addNode(id);
 		node.setAttribute("x", Double.parseDouble(x));
@@ -85,6 +90,27 @@ public class RoadMap {
 	}
 
 	/**
+	 * calculates euclidean distance between Nodes n and this.endNode
+	 * and stores it as attribute "heuristic" in Node n
+	 *
+	 * @param n1
+	 * @param n2
+	 * @return distance (in a straight line) from n1 to n2
+	 */
+	public static double heuristic(Node n1, Node n2){
+		double x1, y1, x2, y2;
+		x1 = n1.getAttribute("x");
+		y1 = n1.getAttribute("y");
+		x2 = n2.getAttribute("x");
+		y2 = n2.getAttribute("y");
+
+		double euclideanDistance = Math.sqrt(Math.pow(x1-x2,2) + Math.pow(y1-y2,2));
+		n1.addAttribute("heuristic", euclideanDistance);
+
+		return euclideanDistance;
+	}
+
+	/**
 	 *
 	 * @param stops Array of nodeId's that represent pickup points for passengers
 	 * @return Array with stops rearranged, i.e. sorted pickup spots + airport as first and last stop
@@ -103,7 +129,7 @@ public class RoadMap {
 			Node stop = graph.getNode(s);
 			Path.Step step;
 
-			p.heuristic(stop);
+			RoadMap.heuristic(stop, p.getEndNode());
 			double dist = stop.getAttribute("heuristic");
 			//stop.removeAttribute("heuristic");
 
@@ -139,6 +165,10 @@ public class RoadMap {
 		result.add(graph.getNode(airport));
 
 		return result;
+	}
+
+	public void sortPassengers(){
+		this.passengers.sort(new Passenger.PassengerComparator());
 	}
 
 	/**
@@ -189,19 +219,6 @@ public class RoadMap {
 			return true;
 		}
 		else return false;
-	}
-
-	public void highlight(String[] stops){
-		graph.addAttribute("ui.stylesheet", "" +
-				"node.pickUp {" +
-				"       fill-color: yellow;" +
-				"}");
-
-		for (String s: stops){
-			Node n = graph.getNode(s);
-
-			n.addAttribute("ui.class", "pickUp");
-		}
 	}
 
 }
