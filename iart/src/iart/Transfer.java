@@ -1,32 +1,24 @@
 package iart;
 
+import java.util.ArrayList;
+
 public class Transfer {
-	public final int CAPACITY = 7;
-	private int ocupation;
+	public final static int CAPACITY = 7;
+	private ArrayList<Passenger> passengers = new ArrayList<>();;
 
-	public Transfer(int ocupation){
-		this.ocupation = ocupation;
-	}
+	public Transfer(){}
 
-	public Transfer(){
-		this.ocupation = 0;
-	}
-
-	public int getOcupation() {
-		return ocupation;
-	}
-
-	public void setOcupation(int ocupation) {
-		this.ocupation = ocupation;
+	public ArrayList<Passenger> getPassengers() {
+		return passengers;
 	}
 
 	public boolean isFull(){
-		return ocupation == CAPACITY;
+		return passengers.size() == CAPACITY;
 	}
 
-	public void addPassenger(){
+	public void addPassenger(Passenger p){
 		if (!this.isFull()){
-			ocupation++;
+			passengers.add(p);
 		}
 	}
 }

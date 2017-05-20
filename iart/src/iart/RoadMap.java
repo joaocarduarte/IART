@@ -25,23 +25,7 @@ public class RoadMap {
 		filesContent.read_edges(this);
 		filesContent.read_passengers(this);
 
-		ArrayList<String> stops = new ArrayList<>();
-		for (Passenger p: passengers){
-			stops.add(p.getPickupSpot());
-		}
-
-		ArrayList<Node> sortedStops = sortStops(stops);
-		int pathLength = 0;
-
-		for (int i = 0; i < sortedStops.size()-1; i++){
-			Node start  = sortedStops.get(i);
-			Node finish = sortedStops.get(i+1);
-
-			Path p = new Path(graph, start, finish);
-			p.route();
-			pathLength += p.getLength();
-			p.highlight();
-		}
+		sortPassengers();
 
 
 		//450
@@ -52,7 +36,7 @@ public class RoadMap {
 		this.add_edge("88", "12", "48");
 		*/
 
-		System.out.println(pathLength);
+
 		graph.display(false);
 	}
 
@@ -169,6 +153,47 @@ public class RoadMap {
 
 	public void sortPassengers(){
 		this.passengers.sort(new Passenger.PassengerComparator());
+
+		ArrayList<Transfer> buses = new ArrayList<>();
+
+		for (int i = 0; i < (int) passengers.size()/Transfer.CAPACITY; i++){
+			buses.add(new Transfer());
+			for (int j = 0; j < Transfer.CAPACITY; j++){
+				int pos = i*Transfer.CAPACITY + j;
+				if (pos < passengers.size()){
+					Passenger p = this.passengers.get(pos);
+					buses.get(i).addPassenger(p);
+				}
+			}
+		}
+
+		for (Transfer b: buses){
+			ArrayList<String> stops = new ArrayList<>();
+			for (Passenger p: b.getPassengers()){
+				stops.add(p.getPickupSpot());
+			}
+
+			ArrayList<Node> sortedStops = sortStops(stops);
+			for (Node n: sortedStops){
+				System.out.print(n + " - ");
+			}
+
+			int pathLength = 0;
+
+			for (int i = 0; i < sortedStops.size()-1; i++){
+				Node start  = sortedStops.get(i);
+				Node finish = sortedStops.get(i+1);
+
+				Path p = new Path(graph, start, finish);
+				p.route();
+				pathLength += p.getLength();
+				p.highlight();
+			}
+			System.out.println("-- " + pathLength);
+		}
+
+
+
 	}
 
 	/**
