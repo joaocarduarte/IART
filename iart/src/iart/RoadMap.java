@@ -105,6 +105,17 @@ public class RoadMap {
 		Path p = new Path(graph, null, graph.getNode(airport));
 		ArrayList<Node> result = new ArrayList<>();
 
+		//get rid of duplicates
+		for (int i = 0; i < stops.size()-1; i++){
+			for (int j = i+1; j < stops.size(); j++){
+				if (stops.get(i).equals(stops.get(j))){
+					stops.remove(i);
+					i--;
+					break;
+				}
+			}
+		}
+
 		//calulate divider line
 		double[] bestFit = lineOfBestFit(stops);
 
